@@ -1,0 +1,74 @@
+.psf-kanban {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	gap: 0.75rem;
+	align-items: start;
+}
+
+.psf-col {
+	background: #fff;
+	border: 1px solid #dcdcde;
+	padding: 0.75rem;
+	min-height: 12rem;
+}
+
+.psf-col h2 {
+	margin: 0 0 0.75rem;
+	font-size: 14px;
+}
+
+.psf-card {
+	border: 1px solid #dcdcde;
+	padding: 0.65rem 0.7rem;
+	margin-bottom: 0.6rem;
+	background: #f6f7f7;
+}
+
+.psf-card.is-held {
+	border-color: #c45c26;
+}
+
+.psf-job-no {
+	font-family: ui-monospace, Menlo, monospace;
+	margin: 0;
+	font-weight: 600;
+}
+
+.psf-job-product,
+.psf-job-meta,
+.psf-held-flag {
+	margin: 0.2rem 0 0;
+}
+
+.psf-job-meta,
+.psf-held-flag {
+	color: #646970;
+	font-size: 12px;
+}
+
+.psf-moves {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.3rem;
+	margin-top: 0.55rem;
+}
+
+.psf-moves button {
+	font-size: 12px;
+}
+
+.psf-moves .primary {
+	font-weight: 600;
+}
+
+.psf-empty {
+	padding: 1rem;
+	background: #fff;
+	border: 1px dashed #dcdcde;
+}
+
+@media (max-width: 1100px) {
+	.psf-kanban {
+		grid-template-columns: 1fr 1fr;
+	}
+}
