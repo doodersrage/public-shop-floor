@@ -79,21 +79,21 @@ endif;
 <?php endif; ?>
 
 <ol class="psf-pipeline" aria-label="<?php echo esc_attr__( 'Station pipeline', 'public-shop-floor' ); ?>">
-	<?php foreach ( PSFloor_Stations::all() as $psf_step ) : ?>
+	<?php foreach ( PSFloor_Stations::all() as $psfloor_step ) : ?>
 		<?php
-		$psf_keys  = PSFloor_Stations::keys();
-		$psf_here  = array_search( $job['station_key'], $psf_keys, true );
-		$psf_index = array_search( $psf_step['key'], $psf_keys, true );
-		$psf_class = 'upcoming';
-		if ( $done || ( false !== $psf_here && false !== $psf_index && $psf_index < $psf_here ) ) {
-			$psf_class = 'past';
+		$psfloor_keys  = PSFloor_Stations::keys();
+		$psfloor_here  = array_search( $job['station_key'], $psfloor_keys, true );
+		$psfloor_index = array_search( $psfloor_step['key'], $psfloor_keys, true );
+		$psfloor_class = 'upcoming';
+		if ( $done || ( false !== $psfloor_here && false !== $psfloor_index && $psfloor_index < $psfloor_here ) ) {
+			$psfloor_class = 'past';
 		}
-		if ( ! $done && $psf_step['key'] === $job['station_key'] ) {
-			$psf_class = 'now';
+		if ( ! $done && $psfloor_step['key'] === $job['station_key'] ) {
+			$psfloor_class = 'now';
 		}
 		?>
-		<li class="<?php echo esc_attr( $psf_class ); ?>">
-			<span><?php echo esc_html( $psf_step['label'] ); ?></span>
+		<li class="<?php echo esc_attr( $psfloor_class ); ?>">
+			<span><?php echo esc_html( $psfloor_step['label'] ); ?></span>
 		</li>
 	<?php endforeach; ?>
 </ol>

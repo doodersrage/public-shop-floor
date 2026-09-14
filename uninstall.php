@@ -10,6 +10,7 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 }
 
 global $wpdb;
+// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange -- Drop custom table on uninstall.
 $wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . 'psf_jobs' );
 delete_option( 'psf_settings' );
 delete_option( 'psf_stations' );
