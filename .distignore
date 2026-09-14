@@ -10,7 +10,7 @@ vendor
 .distignore
 .phpunit.result.cache
 .phpcs.xml
-.phpcs.xml.dist
+phpcs.xml.dist
 phpunit.xml
 phpunit.xml.dist
 composer.json

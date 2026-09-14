@@ -1,6 +1,8 @@
 <?php
 /**
- * Shared floor chrome.
+ * Shared floor chrome (header).
+ *
+ * Expects $shop from the renderer.
  *
  * @package PublicShopFloor
  */
@@ -8,8 +10,6 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-
-$shop = PSF_Plugin::setting( 'shop_name', get_bloginfo( 'name' ) );
 ?><!DOCTYPE html>
 <html <?php language_attributes(); ?>>
 <head>
@@ -21,10 +21,10 @@ $shop = PSF_Plugin::setting( 'shop_name', get_bloginfo( 'name' ) );
 <header class="psf-mast">
 	<div class="psf-wrap">
 		<p class="psf-shop"><a href="<?php echo esc_url( home_url( '/shop-floor/' ) ); ?>"><?php echo esc_html( $shop ); ?></a></p>
-		<nav>
+		<nav aria-label="<?php echo esc_attr__( 'Shop floor', 'public-shop-floor' ); ?>">
 			<a href="<?php echo esc_url( home_url( '/shop-floor/' ) ); ?>"><?php echo esc_html__( 'Floor', 'public-shop-floor' ); ?></a>
 			<a href="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ); ?>"><?php echo esc_html__( 'Shop', 'public-shop-floor' ); ?></a>
 		</nav>
 	</div>
 </header>
-<main class="psf-wrap psf-main">
+<main class="psf-wrap psf-main" id="psf-main">

@@ -1,5 +1,6 @@
 === Public Shop Floor ===
-Contributors: publicshopfloor
+Contributors: doodlersrage
+Donate link:
 Tags: woocommerce, shop floor, made to order, job board, manufacturing
 Requires at least: 6.4
 Tested up to: 7.1
@@ -68,6 +69,10 @@ They stay visible on the board but are out of line until someone resumes them.
 2. Merchant kanban under WooCommerce → Shop floor.
 3. Product checkbox: Made on the floor.
 4. Customer job ticket with station pipeline.
+
+== Privacy ==
+
+Public Shop Floor does not send data to remote servers. It stores job rows in a custom database table and product/settings options on your site. The public board shows job numbers and station status only — not customer names or addresses. On uninstall, the jobs table and plugin options are removed.
 
 == Changelog ==
 

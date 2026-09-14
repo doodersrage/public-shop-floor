@@ -1,15 +1,13 @@
 # WordPress.org plugin directory assets
 
-After the plugin is approved on WordPress.org, commit listing assets here (or upload them via the plugin admin). SVN uses an `assets/` directory sibling to `trunk/`; keeping copies in `.wordpress-org/` is a common git convention.
+These files are for the WordPress.org plugin SVN `assets/` directory (sibling of `trunk/`). They are **not** shipped inside the customer plugin zip.
 
-Required / recommended files:
-
-| File | Size | Notes |
+| File | Size | Status |
 |------|------|--------|
-| `icon-128x128.png` | 128×128 | Plugin icon |
-| `icon-256x256.png` | 256×256 | Retina icon |
-| `banner-772x250.png` or `.jpg` | 772×250 | Listing header |
-| `banner-1544x500.png` or `.jpg` | 1544×500 | Retina banner |
-| `screenshot-1.png` … | — | Match order in `readme.txt` Screenshots |
+| `icon-128x128.png` | 128×128 | Ready |
+| `icon-256x256.png` | 256×256 | Ready |
+| `banner-772x250.png` | 772×250 | Ready |
+| `banner-1544x500.png` | 1544×500 | Ready |
+| `screenshot-1.png` … `screenshot-4.png` | 1280×720 | Ready (match `readme.txt` Screenshots) |
 
-Do not put these inside the plugin zip shipped to users.
+After wordpress.org approval, copy these into the plugin’s SVN `assets/` folder (or use a GitHub Action deploy).

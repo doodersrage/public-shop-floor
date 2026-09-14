@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class PSF_Orders {
+class PSFloor_Orders {
 
 	public static function init() {
 		add_action( 'woocommerce_order_status_processing', array( __CLASS__, 'open_jobs' ) );
@@ -21,17 +21,17 @@ class PSF_Orders {
 	}
 
 	public static function open_jobs( $order_id ) {
-		PSF_Jobs::create_for_order( $order_id );
+		PSFloor_Jobs::create_for_order( $order_id );
 	}
 
 	public static function order_panel( $order ) {
-		$jobs = PSF_Jobs::for_order( $order->get_id() );
+		$jobs = PSFloor_Jobs::for_order( $order->get_id() );
 		if ( ! $jobs ) {
 			return;
 		}
 		echo '<div class="psf-order-jobs"><h3>' . esc_html__( 'Shop floor', 'public-shop-floor' ) . '</h3><ul>';
 		foreach ( $jobs as $job ) {
-			$station = PSF_Stations::get( $job['station_key'] );
+			$station = PSFloor_Stations::get( $job['station_key'] );
 			$label   = $station ? $station['label'] : $job['station_key'];
 			$url     = home_url( '/shop-floor/job/' . $job['token'] . '/' );
 			echo '<li><a href="' . esc_url( $url ) . '">' . esc_html( $job['job_number'] ) . '</a> — ' . esc_html( $label );
@@ -47,13 +47,13 @@ class PSF_Orders {
 	}
 
 	public static function account_jobs( $order ) {
-		$jobs = PSF_Jobs::for_order( $order->get_id() );
+		$jobs = PSFloor_Jobs::for_order( $order->get_id() );
 		if ( ! $jobs ) {
 			return;
 		}
 		echo '<section class="psf-account-jobs"><h2>' . esc_html__( 'On the floor', 'public-shop-floor' ) . '</h2><ul>';
 		foreach ( $jobs as $job ) {
-			$station = PSF_Stations::get( $job['station_key'] );
+			$station = PSFloor_Stations::get( $job['station_key'] );
 			$url     = home_url( '/shop-floor/job/' . $job['token'] . '/' );
 			echo '<li><a href="' . esc_url( $url ) . '">' . esc_html( $job['job_number'] ) . '</a> — ';
 			echo esc_html( $station ? $station['verb'] : $job['station_key'] );
@@ -64,7 +64,7 @@ class PSF_Orders {
 
 	public static function email_jobs( $order, $sent_to_admin, $plain_text ) {
 		unset( $sent_to_admin );
-		$jobs = PSF_Jobs::for_order( $order->get_id() );
+		$jobs = PSFloor_Jobs::for_order( $order->get_id() );
 		if ( ! $jobs ) {
 			return;
 		}

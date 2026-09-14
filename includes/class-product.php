@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class PSF_Product {
+class PSFloor_Product {
 
 	const META = '_psf_on_floor';
 

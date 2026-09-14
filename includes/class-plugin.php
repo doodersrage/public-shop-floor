@@ -9,22 +9,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class PSF_Plugin {
+class PSFloor_Plugin {
 
 	const OPTION = 'psf_settings';
 
 	public static function init() {
-		PSF_Jobs::maybe_install();
+		PSFloor_Jobs::maybe_install();
 		add_action( 'init', array( __CLASS__, 'rewrites' ) );
 		add_action( 'init', array( __CLASS__, 'maybe_flush' ) );
-		PSF_Product::init();
-		PSF_Orders::init();
-		PSF_Admin::init();
-		PSF_Frontend::init();
+		PSFloor_Product::init();
+		PSFloor_Orders::init();
+		PSFloor_Admin::init();
+		PSFloor_Frontend::init();
 	}
 
 	public static function activate() {
-		PSF_Jobs::install();
+		PSFloor_Jobs::install();
 		self::rewrites();
 		update_option( 'psf_flush_rewrites', '1' );
 		flush_rewrite_rules();

@@ -1,6 +1,9 @@
 <?php
 /**
- * Single job on the floor.
+ * Single job ticket markup.
+ *
+ * Expects local scope vars from PSFloor_Frontend::render_job():
+ * $token, $job, $shop, $station, $ahead, $done, $held.
  *
  * @package PublicShopFloor
  */
@@ -8,11 +11,6 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-
-$token = PSF_Frontend::job_token();
-$job   = $token ? PSF_Jobs::get_by_token( $token ) : null;
-
-require PSF_DIR . 'templates/header.php';
 
 if ( ! $job ) :
 	?>
@@ -31,19 +29,13 @@ if ( ! $job ) :
 		</p>
 	</div>
 	<?php
-	require PSF_DIR . 'templates/footer.php';
 	return;
 endif;
-
-$station = PSF_Stations::get( $job['station_key'] );
-$ahead   = PSF_Jobs::place_in_line( $job );
-$done    = 'complete' === $job['status'];
-$held    = 'held' === $job['status'];
 ?>
 
 <p class="psf-kicker"><?php echo esc_html__( 'Job ticket', 'public-shop-floor' ); ?></p>
 <p class="psf-no-lg"><?php echo esc_html( $job['job_number'] ); ?></p>
-<h1><?php echo esc_html( PSF_Jobs::product_title( $job ) ); ?></h1>
+<h1><?php echo esc_html( PSFloor_Jobs::product_title( $job ) ); ?></h1>
 
 <?php if ( $done ) : ?>
 	<div class="psf-status is-done">
@@ -82,14 +74,14 @@ $held    = 'held' === $job['status'];
 			}
 			?>
 		</p>
-		<p class="psf-age"><?php echo esc_html( PSF_Jobs::age_label( $job ) ); ?></p>
+		<p class="psf-age"><?php echo esc_html( PSFloor_Jobs::age_label( $job ) ); ?></p>
 	</div>
 <?php endif; ?>
 
-<ol class="psf-pipeline">
-	<?php foreach ( PSF_Stations::all() as $step ) : ?>
+<ol class="psf-pipeline" aria-label="<?php echo esc_attr__( 'Station pipeline', 'public-shop-floor' ); ?>">
+	<?php foreach ( PSFloor_Stations::all() as $step ) : ?>
 		<?php
-		$keys  = PSF_Stations::keys();
+		$keys  = PSFloor_Stations::keys();
 		$here  = array_search( $job['station_key'], $keys, true );
 		$index = array_search( $step['key'], $keys, true );
 		$class = 'upcoming';
@@ -107,6 +99,3 @@ $held    = 'held' === $job['status'];
 </ol>
 
 <p><a class="psf-text-link" href="<?php echo esc_url( home_url( '/shop-floor/' ) ); ?>"><?php echo esc_html__( 'See the whole floor', 'public-shop-floor' ); ?></a></p>
-
-<?php
-require PSF_DIR . 'templates/footer.php';

@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class PSF_Jobs {
+class PSFloor_Jobs {
 
 	public static function table() {
 		global $wpdb;
@@ -62,7 +62,7 @@ class PSF_Jobs {
 		$created = array();
 		foreach ( $order->get_items() as $item_id => $item ) {
 			$product = $item->get_product();
-			if ( ! $product || ! PSF_Product::is_on_floor( $product ) ) {
+			if ( ! $product || ! PSFloor_Product::is_on_floor( $product ) ) {
 				continue;
 			}
 			$existing = self::get_by_item( (int) $order->get_id(), (int) $item_id );
@@ -93,7 +93,7 @@ class PSF_Jobs {
 			'product_id'    => (int) ( $args['product_id'] ?? 0 ),
 			'job_number'    => $number,
 			'token'         => bin2hex( random_bytes( 12 ) ),
-			'station_key'   => sanitize_key( $args['station_key'] ?? PSF_Stations::first_key() ),
+			'station_key'   => sanitize_key( $args['station_key'] ?? PSFloor_Stations::first_key() ),
 			'status'        => sanitize_key( $args['status'] ?? 'queued' ),
 			'note'          => sanitize_textarea_field( $args['note'] ?? '' ),
 			'created_at'    => $args['created_at'] ?? $now,
@@ -106,48 +106,59 @@ class PSF_Jobs {
 
 	public static function next_job_number() {
 		$n = (int) get_option( 'psf_job_seq', 1040 );
-		$n++;
+		++$n;
 		update_option( 'psf_job_seq', $n, false );
 		return 'PSF-' . $n;
 	}
 
+	/**
+	 * Table name is built from $wpdb->prefix and is never user input.
+	 * Placeholders cover all dynamic values; WPCS still flags {$table}.
+	 *
+	 * phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQL.NotPrepared
+	 */
 	public static function get( $id ) {
 		global $wpdb;
-		$row = $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM ' . self::table() . ' WHERE id = %d', $id ), ARRAY_A );
-		return $row ?: null;
+		$table = self::table();
+		$row   = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$table} WHERE id = %d", $id ), ARRAY_A );
+		return $row ? $row : null;
 	}
 
 	public static function get_by_token( $token ) {
 		global $wpdb;
-		$row = $wpdb->get_row(
-			$wpdb->prepare( 'SELECT * FROM ' . self::table() . ' WHERE token = %s', sanitize_text_field( $token ) ),
+		$table = self::table();
+		$row   = $wpdb->get_row(
+			$wpdb->prepare( "SELECT * FROM {$table} WHERE token = %s", sanitize_text_field( $token ) ),
 			ARRAY_A
 		);
-		return $row ?: null;
+		return $row ? $row : null;
 	}
 
 	public static function get_by_item( $order_id, $item_id ) {
 		global $wpdb;
-		$row = $wpdb->get_row(
+		$table = self::table();
+		$row   = $wpdb->get_row(
 			$wpdb->prepare(
-				'SELECT * FROM ' . self::table() . ' WHERE order_id = %d AND order_item_id = %d LIMIT 1',
+				"SELECT * FROM {$table} WHERE order_id = %d AND order_item_id = %d LIMIT 1",
 				$order_id,
 				$item_id
 			),
 			ARRAY_A
 		);
-		return $row ?: null;
+		return $row ? $row : null;
 	}
 
 	public static function for_order( $order_id ) {
 		global $wpdb;
-		return $wpdb->get_results(
+		$table = self::table();
+		$rows  = $wpdb->get_results(
 			$wpdb->prepare(
-				'SELECT * FROM ' . self::table() . ' WHERE order_id = %d ORDER BY id ASC',
+				"SELECT * FROM {$table} WHERE order_id = %d ORDER BY id ASC",
 				$order_id
 			),
 			ARRAY_A
-		) ?: array();
+		);
+		return $rows ? $rows : array();
 	}
 
 	public static function on_floor() {
@@ -157,8 +168,9 @@ class PSF_Jobs {
 			"SELECT * FROM {$table} WHERE status IN ('queued','in_station','held') ORDER BY updated_at ASC, id ASC",
 			ARRAY_A
 		);
-		return $rows ?: array();
+		return $rows ? $rows : array();
 	}
+	// phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQL.NotPrepared
 
 	public static function at_station( $station_key ) {
 		$out = array();
@@ -179,7 +191,7 @@ class PSF_Jobs {
 			if ( 'held' === $other['status'] ) {
 				continue;
 			}
-			$ahead++;
+			++$ahead;
 		}
 		return $ahead;
 	}
@@ -211,7 +223,7 @@ class PSF_Jobs {
 		if ( ! $job ) {
 			return null;
 		}
-		$next = PSF_Stations::next_key( $job['station_key'] );
+		$next = PSFloor_Stations::next_key( $job['station_key'] );
 		if ( ! $next ) {
 			return self::update( $id, array( 'status' => 'complete' ) );
 		}
@@ -229,7 +241,7 @@ class PSF_Jobs {
 		if ( ! $job ) {
 			return null;
 		}
-		$prev = PSF_Stations::prev_key( $job['station_key'] );
+		$prev = PSFloor_Stations::prev_key( $job['station_key'] );
 		if ( ! $prev ) {
 			return $job;
 		}
@@ -251,7 +263,7 @@ class PSF_Jobs {
 	}
 
 	public static function complete( $id ) {
-		$last = PSF_Stations::last_key();
+		$last = PSFloor_Stations::last_key();
 		return self::update(
 			$id,
 			array(
@@ -267,14 +279,17 @@ class PSF_Jobs {
 	}
 
 	public static function age_label( $job ) {
-		$ts = strtotime( $job['updated_at'] );
+		$ts = strtotime( $job['updated_at'] . ' ' . wp_timezone_string() );
+		if ( ! $ts ) {
+			$ts = strtotime( $job['updated_at'] );
+		}
 		if ( ! $ts ) {
 			return '';
 		}
 		return sprintf(
 			/* translators: %s: human-readable time difference, e.g. "2 hours" */
 			__( '%s at this station', 'public-shop-floor' ),
-			human_time_diff( $ts, current_time( 'timestamp' ) )
+			human_time_diff( $ts, time() )
 		);
 	}
 }

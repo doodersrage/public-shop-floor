@@ -23,28 +23,28 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'PSF_VERSION', '1.0.0' );
-define( 'PSF_FILE', __FILE__ );
-define( 'PSF_DIR', plugin_dir_path( __FILE__ ) );
-define( 'PSF_URL', plugin_dir_url( __FILE__ ) );
+define( 'PSFLOOR_VERSION', '1.0.0' );
+define( 'PSFLOOR_FILE', __FILE__ );
+define( 'PSFLOOR_DIR', plugin_dir_path( __FILE__ ) );
+define( 'PSFLOOR_URL', plugin_dir_url( __FILE__ ) );
 
-require_once PSF_DIR . 'includes/class-plugin.php';
-require_once PSF_DIR . 'includes/class-stations.php';
-require_once PSF_DIR . 'includes/class-jobs.php';
-require_once PSF_DIR . 'includes/class-product.php';
-require_once PSF_DIR . 'includes/class-orders.php';
-require_once PSF_DIR . 'includes/class-admin.php';
-require_once PSF_DIR . 'includes/class-frontend.php';
+require_once PSFLOOR_DIR . 'includes/class-plugin.php';
+require_once PSFLOOR_DIR . 'includes/class-stations.php';
+require_once PSFLOOR_DIR . 'includes/class-jobs.php';
+require_once PSFLOOR_DIR . 'includes/class-product.php';
+require_once PSFLOOR_DIR . 'includes/class-orders.php';
+require_once PSFLOOR_DIR . 'includes/class-admin.php';
+require_once PSFLOOR_DIR . 'includes/class-frontend.php';
 
-register_activation_hook( __FILE__, array( 'PSF_Plugin', 'activate' ) );
-register_deactivation_hook( __FILE__, array( 'PSF_Plugin', 'deactivate' ) );
+register_activation_hook( __FILE__, array( 'PSFloor_Plugin', 'activate' ) );
+register_deactivation_hook( __FILE__, array( 'PSFloor_Plugin', 'deactivate' ) );
 
 add_action(
 	'before_woocommerce_init',
 	static function () {
 		if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
-			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', PSF_FILE, true );
-			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'cart_checkout_blocks', PSF_FILE, true );
+			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', PSFLOOR_FILE, true );
+			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'cart_checkout_blocks', PSFLOOR_FILE, true );
 		}
 	}
 );
@@ -52,7 +52,7 @@ add_action(
 add_action(
 	'plugins_loaded',
 	static function () {
-		load_plugin_textdomain( 'public-shop-floor', false, dirname( plugin_basename( PSF_FILE ) ) . '/languages' );
+		load_plugin_textdomain( 'public-shop-floor', false, dirname( plugin_basename( PSFLOOR_FILE ) ) . '/languages' );
 
 		if ( ! class_exists( 'WooCommerce' ) ) {
 			add_action(
@@ -63,6 +63,6 @@ add_action(
 			);
 			return;
 		}
-		PSF_Plugin::init();
+		PSFloor_Plugin::init();
 	}
 );

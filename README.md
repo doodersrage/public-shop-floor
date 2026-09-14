@@ -38,15 +38,17 @@ Default line: Mill → Joinery → Finish → Packed.
 
 Change them under **WooCommerce → Shop floor → Floor settings**. Each line is `Label | key | verb` (the verb is the “being …” copy on the ticket). Existing jobs keep the station key they already have.
 
-## Packaging for WordPress.org / Woo Marketplace
+## Packaging & marketplace submission
 
 ```bash
+composer install
+composer phpcs
 ./bin/build-zip.sh
 ```
 
 This produces `dist/public-shop-floor-1.0.0.zip` with the correct plugin folder name.
 
-Directory assets (icon, banner, screenshots) for the WordPress.org listing live in `.wordpress-org/` after you add them — see that folder’s README.
+Listing assets: `.wordpress-org/`. Full Woo / WordPress.org submit steps: [MARKETPLACE.md](MARKETPLACE.md).
 
 ## License
 

@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class PSF_Stations {
+class PSFloor_Stations {
 
 	public static function defaults() {
 		return array(
@@ -97,8 +97,11 @@ class PSF_Stations {
 	}
 
 	public static function save_from_text( $text ) {
-		$lines = preg_split( '/\R/', (string) $text ) ?: array();
-		$rows  = array();
+		$lines = preg_split( '/\R/', (string) $text );
+		if ( ! is_array( $lines ) ) {
+			$lines = array();
+		}
+		$rows = array();
 		foreach ( $lines as $line ) {
 			$line = trim( $line );
 			if ( '' === $line || str_starts_with( $line, '#' ) ) {

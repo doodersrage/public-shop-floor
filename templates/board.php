@@ -1,6 +1,9 @@
 <?php
 /**
- * Public shop-floor board.
+ * Public shop-floor board markup.
+ *
+ * Expects local scope vars from PSFloor_Frontend::render_board():
+ * $stations, $show_product, $jobs, $shop.
  *
  * @package PublicShopFloor
  */
@@ -8,25 +11,11 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-
-if ( '1' !== PSF_Plugin::setting( 'public_board', '1' ) ) {
-	wp_die(
-		esc_html__( 'The shop floor is not public.', 'public-shop-floor' ),
-		esc_html__( 'Shop floor', 'public-shop-floor' ),
-		array( 'response' => 403 )
-	);
-}
-
-$stations     = PSF_Stations::all();
-$show_product = '1' === PSF_Plugin::setting( 'show_product', '1' );
-$jobs         = PSF_Jobs::on_floor();
-
-require PSF_DIR . 'templates/header.php';
 ?>
 
 <p class="psf-kicker"><?php echo esc_html__( 'Live floor', 'public-shop-floor' ); ?></p>
 <h1><?php echo esc_html__( 'Shop floor', 'public-shop-floor' ); ?></h1>
-<p class="psf-lede"><?php echo esc_html( PSF_Plugin::setting( 'intro' ) ); ?></p>
+<p class="psf-lede"><?php echo esc_html( PSFloor_Plugin::setting( 'intro' ) ); ?></p>
 
 <?php if ( ! $jobs ) : ?>
 	<div class="psf-empty">
@@ -35,12 +24,12 @@ require PSF_DIR . 'templates/header.php';
 	</div>
 <?php else : ?>
 	<p class="psf-count"><?php echo esc_html( sprintf( _n( '%s job on the floor', '%s jobs on the floor', count( $jobs ), 'public-shop-floor' ), number_format_i18n( count( $jobs ) ) ) ); ?></p>
-	<div class="psf-board">
+	<div class="psf-board" role="list">
 		<?php foreach ( $stations as $station ) : ?>
-			<section class="psf-station">
+			<section class="psf-station" role="listitem" aria-label="<?php echo esc_attr( $station['label'] ); ?>">
 				<h2><?php echo esc_html( $station['label'] ); ?></h2>
 				<?php
-				$column = PSF_Jobs::at_station( $station['key'] );
+				$column = PSFloor_Jobs::at_station( $station['key'] );
 				if ( ! $column ) :
 					?>
 					<p class="psf-idle"><?php echo esc_html__( 'Idle', 'public-shop-floor' ); ?></p>
@@ -51,9 +40,9 @@ require PSF_DIR . 'templates/header.php';
 								<a href="<?php echo esc_url( home_url( '/shop-floor/job/' . $job['token'] . '/' ) ); ?>">
 									<span class="psf-no"><?php echo esc_html( $job['job_number'] ); ?></span>
 									<?php if ( $show_product ) : ?>
-										<span class="psf-prod"><?php echo esc_html( PSF_Jobs::product_title( $job ) ); ?></span>
+										<span class="psf-prod"><?php echo esc_html( PSFloor_Jobs::product_title( $job ) ); ?></span>
 									<?php endif; ?>
-									<span class="psf-age"><?php echo 'held' === $job['status'] ? esc_html__( 'Held', 'public-shop-floor' ) : esc_html( PSF_Jobs::age_label( $job ) ); ?></span>
+									<span class="psf-age"><?php echo 'held' === $job['status'] ? esc_html__( 'Held', 'public-shop-floor' ) : esc_html( PSFloor_Jobs::age_label( $job ) ); ?></span>
 									<?php if ( 'held' !== $job['status'] ) : ?>
 										<span class="psf-place">
 											<?php
@@ -80,6 +69,3 @@ require PSF_DIR . 'templates/header.php';
 		<?php endforeach; ?>
 	</div>
 <?php endif; ?>
-
-<?php
-require PSF_DIR . 'templates/footer.php';
