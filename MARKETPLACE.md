@@ -13,15 +13,18 @@ This package is ready to upload to the **WooCommerce.com Marketplace** (and opti
 - Release zip via `./bin/build-zip.sh`
 - PHPCS / WPCS: `composer install && composer phpcs`
 
-## Build the upload zip
+## Plugin Check
+
+Always run Plugin Check against the **release zip**, not this git checkout:
 
 ```bash
 ./bin/build-zip.sh
-# → dist/public-shop-floor-1.0.0.zip
+# Install dist/public-shop-floor-1.0.0.zip so the folder is wp-content/plugins/public-shop-floor/
 ```
 
-Do **not** upload the git repo or `.wordpress-org/` assets inside the product zip (the build script excludes them).
+Checking the repo folder `shop-floor/` falsely reports text-domain mismatches (expects `shop-floor`) and flags `.gitignore`, `bin/`, `phpcs.xml.dist`, etc. Those files are excluded from the zip.
 
+Direct DB warnings on the jobs table / uninstall are expected for a custom table and are fine.
 ---
 
 ## WooCommerce.com Marketplace

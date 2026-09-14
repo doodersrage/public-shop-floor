@@ -119,16 +119,16 @@ class PSFloor_Jobs {
 	 */
 	public static function get( $id ) {
 		global $wpdb;
-		$table = self::table();
-		$row   = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$table} WHERE id = %d", $id ), ARRAY_A );
+		$table = esc_sql( self::table() );
+		$row   = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `{$table}` WHERE id = %d", $id ), ARRAY_A );
 		return $row ? $row : null;
 	}
 
 	public static function get_by_token( $token ) {
 		global $wpdb;
-		$table = self::table();
+		$table = esc_sql( self::table() );
 		$row   = $wpdb->get_row(
-			$wpdb->prepare( "SELECT * FROM {$table} WHERE token = %s", sanitize_text_field( $token ) ),
+			$wpdb->prepare( "SELECT * FROM `{$table}` WHERE token = %s", sanitize_text_field( $token ) ),
 			ARRAY_A
 		);
 		return $row ? $row : null;
@@ -136,10 +136,10 @@ class PSFloor_Jobs {
 
 	public static function get_by_item( $order_id, $item_id ) {
 		global $wpdb;
-		$table = self::table();
+		$table = esc_sql( self::table() );
 		$row   = $wpdb->get_row(
 			$wpdb->prepare(
-				"SELECT * FROM {$table} WHERE order_id = %d AND order_item_id = %d LIMIT 1",
+				"SELECT * FROM `{$table}` WHERE order_id = %d AND order_item_id = %d LIMIT 1",
 				$order_id,
 				$item_id
 			),
@@ -150,10 +150,10 @@ class PSFloor_Jobs {
 
 	public static function for_order( $order_id ) {
 		global $wpdb;
-		$table = self::table();
+		$table = esc_sql( self::table() );
 		$rows  = $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT * FROM {$table} WHERE order_id = %d ORDER BY id ASC",
+				"SELECT * FROM `{$table}` WHERE order_id = %d ORDER BY id ASC",
 				$order_id
 			),
 			ARRAY_A
@@ -163,9 +163,9 @@ class PSFloor_Jobs {
 
 	public static function on_floor() {
 		global $wpdb;
-		$table = self::table();
+		$table = esc_sql( self::table() );
 		$rows  = $wpdb->get_results(
-			"SELECT * FROM {$table} WHERE status IN ('queued','in_station','held') ORDER BY updated_at ASC, id ASC",
+			"SELECT * FROM `{$table}` WHERE status IN ('queued','in_station','held') ORDER BY updated_at ASC, id ASC",
 			ARRAY_A
 		);
 		return $rows ? $rows : array();

@@ -23,37 +23,47 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<p><?php echo esc_html__( 'No made-to-order jobs are in the shop right now. When an order is paid, it will show up at the first station.', 'public-shop-floor' ); ?></p>
 	</div>
 <?php else : ?>
-	<p class="psf-count"><?php echo esc_html( sprintf( _n( '%s job on the floor', '%s jobs on the floor', count( $jobs ), 'public-shop-floor' ), number_format_i18n( count( $jobs ) ) ) ); ?></p>
+	<p class="psf-count">
+		<?php
+		echo esc_html(
+			sprintf(
+				/* translators: %s: number of jobs currently on the floor */
+				_n( '%s job on the floor', '%s jobs on the floor', count( $jobs ), 'public-shop-floor' ),
+				number_format_i18n( count( $jobs ) )
+			)
+		);
+		?>
+	</p>
 	<div class="psf-board" role="list">
-		<?php foreach ( $stations as $station ) : ?>
-			<section class="psf-station" role="listitem" aria-label="<?php echo esc_attr( $station['label'] ); ?>">
-				<h2><?php echo esc_html( $station['label'] ); ?></h2>
+		<?php foreach ( $stations as $psf_station ) : ?>
+			<section class="psf-station" role="listitem" aria-label="<?php echo esc_attr( $psf_station['label'] ); ?>">
+				<h2><?php echo esc_html( $psf_station['label'] ); ?></h2>
 				<?php
-				$column = PSFloor_Jobs::at_station( $station['key'] );
-				if ( ! $column ) :
+				$psf_column = PSFloor_Jobs::at_station( $psf_station['key'] );
+				if ( ! $psf_column ) :
 					?>
 					<p class="psf-idle"><?php echo esc_html__( 'Idle', 'public-shop-floor' ); ?></p>
 				<?php else : ?>
 					<ol class="psf-queue">
-						<?php foreach ( $column as $i => $job ) : ?>
-							<li class="<?php echo 'held' === $job['status'] ? 'is-held' : ''; ?>">
-								<a href="<?php echo esc_url( home_url( '/shop-floor/job/' . $job['token'] . '/' ) ); ?>">
-									<span class="psf-no"><?php echo esc_html( $job['job_number'] ); ?></span>
+						<?php foreach ( $psf_column as $psf_i => $psf_job ) : ?>
+							<li class="<?php echo 'held' === $psf_job['status'] ? 'is-held' : ''; ?>">
+								<a href="<?php echo esc_url( home_url( '/shop-floor/job/' . $psf_job['token'] . '/' ) ); ?>">
+									<span class="psf-no"><?php echo esc_html( $psf_job['job_number'] ); ?></span>
 									<?php if ( $show_product ) : ?>
-										<span class="psf-prod"><?php echo esc_html( PSFloor_Jobs::product_title( $job ) ); ?></span>
+										<span class="psf-prod"><?php echo esc_html( PSFloor_Jobs::product_title( $psf_job ) ); ?></span>
 									<?php endif; ?>
-									<span class="psf-age"><?php echo 'held' === $job['status'] ? esc_html__( 'Held', 'public-shop-floor' ) : esc_html( PSFloor_Jobs::age_label( $job ) ); ?></span>
-									<?php if ( 'held' !== $job['status'] ) : ?>
+									<span class="psf-age"><?php echo 'held' === $psf_job['status'] ? esc_html__( 'Held', 'public-shop-floor' ) : esc_html( PSFloor_Jobs::age_label( $psf_job ) ); ?></span>
+									<?php if ( 'held' !== $psf_job['status'] ) : ?>
 										<span class="psf-place">
 											<?php
-											if ( 0 === $i ) {
+											if ( 0 === $psf_i ) {
 												echo esc_html__( 'At the bench', 'public-shop-floor' );
 											} else {
 												echo esc_html(
 													sprintf(
 														/* translators: %d: number of jobs ahead in line */
-														_n( '%d ahead', '%d ahead', $i, 'public-shop-floor' ),
-														$i
+														_n( '%d ahead', '%d ahead', $psf_i, 'public-shop-floor' ),
+														$psf_i
 													)
 												);
 											}

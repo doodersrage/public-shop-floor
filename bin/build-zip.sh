@@ -22,15 +22,15 @@ if command -v rsync >/dev/null 2>&1; then
 else
 	# Minimal fallback when rsync is unavailable.
 	cp -a "$ROOT/public-shop-floor.php" "$ROOT/uninstall.php" "$ROOT/LICENSE" "$ROOT/readme.txt" "$STAGE/$SLUG/"
-	cp -a "$ROOT/includes" "$ROOT/templates" "$ROOT/assets" "$STAGE/$SLUG/"
-	mkdir -p "$STAGE/$SLUG/languages"
-	touch "$STAGE/$SLUG/languages/.gitkeep"
+	cp -a "$ROOT/includes" "$ROOT/templates" "$ROOT/assets" "$ROOT/languages" "$STAGE/$SLUG/"
 fi
 
-# Ensure empty languages dir ships for Domain Path.
+# Domain Path dir with a silence file (no hidden .gitkeep in the zip).
 mkdir -p "$STAGE/$SLUG/languages"
-touch "$STAGE/$SLUG/languages/.gitkeep"
-
+if [[ ! -f "$STAGE/$SLUG/languages/index.php" ]]; then
+	printf '%s\n' '<?php' '// Silence is golden.' > "$STAGE/$SLUG/languages/index.php"
+fi
+rm -f "$STAGE/$SLUG/languages/.gitkeep"
 (
 	cd "$STAGE"
 	rm -f "$OUT_DIR/$ZIP_NAME"

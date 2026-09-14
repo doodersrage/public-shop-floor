@@ -52,8 +52,6 @@ add_action(
 add_action(
 	'plugins_loaded',
 	static function () {
-		load_plugin_textdomain( 'public-shop-floor', false, dirname( plugin_basename( PSFLOOR_FILE ) ) . '/languages' );
-
 		if ( ! class_exists( 'WooCommerce' ) ) {
 			add_action(
 				'admin_notices',
