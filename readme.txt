@@ -37,7 +37,7 @@ Compatible with WooCommerce High-Performance Order Storage (HPOS) and Cart & Che
 
 == Installation ==
 
-1. Upload the `public-shop-floor` folder to `/wp-content/plugins/`, or install the zip via **Plugins → Add New → Upload Plugin**.
+1. Upload the `public-shop-floor` folder to `/wp-content/plugins/`, install the release zip, or clone `https://github.com/doodersrage/public-shop-floor.git` into that path (folder name must stay `public-shop-floor`).
 2. Activate **WooCommerce**, then **Public Shop Floor**.
 3. Edit a product and check **Made on the floor**.
 4. Paid orders in Processing (or On hold / Completed) open jobs at the first station.

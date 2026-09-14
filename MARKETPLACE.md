@@ -15,17 +15,17 @@ This package is ready to upload to the **WooCommerce.com Marketplace** (and opti
 
 ## Plugin Check
 
-Always run Plugin Check against the **release zip**, not this git checkout:
+Clone or install so the plugin folder is named `public-shop-floor` (matches the text domain):
 
 ```bash
-./bin/build-zip.sh
-# Install dist/public-shop-floor-1.0.0.zip so the folder is wp-content/plugins/public-shop-floor/
+cd wp-content/plugins
+git clone https://github.com/doodersrage/public-shop-floor.git
+# or: ./bin/build-zip.sh && upload dist/public-shop-floor-1.0.0.zip
 ```
 
-Checking the repo folder `shop-floor/` falsely reports text-domain mismatches (expects `shop-floor`) and flags `.gitignore`, `bin/`, `phpcs.xml.dist`, etc. Those files are excluded from the zip.
+If the folder is named something else (e.g. an old `shop-floor` checkout), Plugin Check will falsely report text-domain mismatches.
 
-Direct DB warnings on the jobs table / uninstall are expected for a custom table and are fine.
----
+Dev-only files (`.gitignore`, `bin/`, `phpcs.xml.dist`, `MARKETPLACE.md`) are excluded from the release zip. Direct DB warnings on the jobs table / uninstall are expected for a custom table.---
 
 ## WooCommerce.com Marketplace
 
@@ -85,7 +85,7 @@ After upload, Woo runs Activation, Security, PHPCompatibility, Malware, Validati
 
 ### 5. Docs / support URL
 
-Point support to your preferred channel (email or docs site). Until you have one, use the GitHub repo issues: https://github.com/doodersrage/shop-floor/issues
+Point support to your preferred channel (email or docs site). Until you have one, use the GitHub repo issues: https://github.com/doodersrage/public-shop-floor/issues
 
 ---
 

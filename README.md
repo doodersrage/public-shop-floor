@@ -24,6 +24,17 @@ Compatible with HPOS and Cart & Checkout blocks.
 
 ## Install
 
+**Git clone (dev):**
+
+```bash
+cd wp-content/plugins
+git clone https://github.com/doodersrage/public-shop-floor.git
+```
+
+The folder name must be `public-shop-floor` so it matches the text domain (Plugin Check / WordPress.org).
+
+**Zip / copy:**
+
 1. Copy the `public-shop-floor` folder into `wp-content/plugins/` (or upload the release zip).
 2. Activate **WooCommerce**, then **Public Shop Floor**.
 3. Edit a product and check **Made on the floor**.
