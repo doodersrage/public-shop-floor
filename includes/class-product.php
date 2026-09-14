@@ -32,13 +32,14 @@ class PSF_Product {
 		woocommerce_wp_checkbox(
 			array(
 				'id'          => self::META,
-				'label'       => 'Made on the floor',
-				'description' => 'When this sells, a job appears on the public shop floor and moves station by station.',
+				'label'       => __( 'Made on the floor', 'public-shop-floor' ),
+				'description' => __( 'When this sells, a job appears on the public shop floor and moves station by station.', 'public-shop-floor' ),
 			)
 		);
 	}
 
 	public static function save( $product ) {
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- WooCommerce product save already verified.
 		$value = isset( $_POST[ self::META ] ) ? 'yes' : 'no';
 		$product->update_meta_data( self::META, $value );
 	}

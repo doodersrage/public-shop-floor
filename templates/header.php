@@ -22,8 +22,8 @@ $shop = PSF_Plugin::setting( 'shop_name', get_bloginfo( 'name' ) );
 	<div class="psf-wrap">
 		<p class="psf-shop"><a href="<?php echo esc_url( home_url( '/shop-floor/' ) ); ?>"><?php echo esc_html( $shop ); ?></a></p>
 		<nav>
-			<a href="<?php echo esc_url( home_url( '/shop-floor/' ) ); ?>">Floor</a>
-			<a href="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ); ?>">Shop</a>
+			<a href="<?php echo esc_url( home_url( '/shop-floor/' ) ); ?>"><?php echo esc_html__( 'Floor', 'public-shop-floor' ); ?></a>
+			<a href="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ); ?>"><?php echo esc_html__( 'Shop', 'public-shop-floor' ); ?></a>
 		</nav>
 	</div>
 </header>

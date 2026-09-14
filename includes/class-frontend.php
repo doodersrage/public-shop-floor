@@ -61,10 +61,10 @@ class PSF_Frontend {
 
 	public static function title( $parts ) {
 		if ( self::is_board() ) {
-			$parts['title'] = 'Shop floor';
+			$parts['title'] = __( 'Shop floor', 'public-shop-floor' );
 		}
 		if ( self::job_token() ) {
-			$parts['title'] = 'Job';
+			$parts['title'] = __( 'Job', 'public-shop-floor' );
 		}
 		return $parts;
 	}

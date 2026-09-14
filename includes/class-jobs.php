@@ -215,10 +215,6 @@ class PSF_Jobs {
 		if ( ! $next ) {
 			return self::update( $id, array( 'status' => 'complete' ) );
 		}
-		$status = ( PSF_Stations::last_key() === $next ) ? 'queued' : 'in_station';
-		if ( PSF_Stations::last_key() === $next ) {
-			$status = 'queued';
-		}
 		return self::update(
 			$id,
 			array(
@@ -267,7 +263,7 @@ class PSF_Jobs {
 
 	public static function product_title( $job ) {
 		$product = wc_get_product( (int) $job['product_id'] );
-		return $product ? $product->get_name() : 'Job';
+		return $product ? $product->get_name() : __( 'Job', 'public-shop-floor' );
 	}
 
 	public static function age_label( $job ) {
@@ -275,6 +271,10 @@ class PSF_Jobs {
 		if ( ! $ts ) {
 			return '';
 		}
-		return human_time_diff( $ts, current_time( 'timestamp' ) ) . ' at this station';
+		return sprintf(
+			/* translators: %s: human-readable time difference, e.g. "2 hours" */
+			__( '%s at this station', 'public-shop-floor' ),
+			human_time_diff( $ts, current_time( 'timestamp' ) )
+		);
 	}
 }

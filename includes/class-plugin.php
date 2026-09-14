@@ -51,7 +51,7 @@ class PSF_Plugin {
 	public static function defaults() {
 		return array(
 			'shop_name'    => get_bloginfo( 'name' ),
-			'intro'        => 'This is the floor, not a tracking page. Jobs move when a person finishes a station. If your piece is not on the board, it is not in the shop yet — or it has already left Packed.',
+			'intro'        => __( 'This is the floor, not a tracking page. Jobs move when a person finishes a station. If your piece is not on the board, it is not in the shop yet — or it has already left Packed.', 'public-shop-floor' ),
 			'public_board' => '1',
 			'show_product' => '1',
 		);

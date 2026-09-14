@@ -17,8 +17,18 @@ require PSF_DIR . 'templates/header.php';
 if ( ! $job ) :
 	?>
 	<div class="psf-empty">
-		<h1>No job with that ticket</h1>
-		<p>The link may be wrong, or the piece already left Packed. Check the <a href="<?php echo esc_url( home_url( '/shop-floor/' ) ); ?>">live floor</a>.</p>
+		<h1><?php echo esc_html__( 'No job with that ticket', 'public-shop-floor' ); ?></h1>
+		<p>
+			<?php
+			echo wp_kses_post(
+				sprintf(
+					/* translators: %s: URL to the public shop floor */
+					__( 'The link may be wrong, or the piece already left Packed. Check the <a href="%s">live floor</a>.', 'public-shop-floor' ),
+					esc_url( home_url( '/shop-floor/' ) )
+				)
+			);
+			?>
+		</p>
 	</div>
 	<?php
 	require PSF_DIR . 'templates/footer.php';
@@ -31,17 +41,27 @@ $done    = 'complete' === $job['status'];
 $held    = 'held' === $job['status'];
 ?>
 
-<p class="psf-kicker">Job ticket</p>
+<p class="psf-kicker"><?php echo esc_html__( 'Job ticket', 'public-shop-floor' ); ?></p>
 <p class="psf-no-lg"><?php echo esc_html( $job['job_number'] ); ?></p>
 <h1><?php echo esc_html( PSF_Jobs::product_title( $job ) ); ?></h1>
 
 <?php if ( $done ) : ?>
 	<div class="psf-status is-done">
-		<p>This job has left the floor. Packed is finished; it is no longer in a station queue.</p>
+		<p><?php echo esc_html__( 'This job has left the floor. Packed is finished; it is no longer in a station queue.', 'public-shop-floor' ); ?></p>
 	</div>
 <?php elseif ( $held ) : ?>
 	<div class="psf-status is-held">
-		<p>Held at <?php echo esc_html( $station ? $station['label'] : $job['station_key'] ); ?>. The bench is waiting on a part, a question, or a finish to dry. It is not in line until someone resumes it.</p>
+		<p>
+			<?php
+			echo esc_html(
+				sprintf(
+					/* translators: %s: station label */
+					__( 'Held at %s. The bench is waiting on a part, a question, or a finish to dry. It is not in line until someone resumes it.', 'public-shop-floor' ),
+					$station ? $station['label'] : $job['station_key']
+				)
+			);
+			?>
+		</p>
 	</div>
 <?php else : ?>
 	<div class="psf-status">
@@ -49,9 +69,16 @@ $held    = 'held' === $job['status'];
 		<p>
 			<?php
 			if ( 0 === $ahead ) {
-				echo 'This piece is at the bench now.';
+				echo esc_html__( 'This piece is at the bench now.', 'public-shop-floor' );
 			} else {
-				echo esc_html( sprintf( _n( '%d job ahead in %s.', '%d jobs ahead in %s.', $ahead, 'public-shop-floor' ), $ahead, $station ? $station['label'] : 'this station' ) );
+				echo esc_html(
+					sprintf(
+						/* translators: 1: number of jobs ahead, 2: station label */
+						_n( '%1$d job ahead in %2$s.', '%1$d jobs ahead in %2$s.', $ahead, 'public-shop-floor' ),
+						$ahead,
+						$station ? $station['label'] : __( 'this station', 'public-shop-floor' )
+					)
+				);
 			}
 			?>
 		</p>
@@ -79,7 +106,7 @@ $held    = 'held' === $job['status'];
 	<?php endforeach; ?>
 </ol>
 
-<p><a class="psf-text-link" href="<?php echo esc_url( home_url( '/shop-floor/' ) ); ?>">See the whole floor</a></p>
+<p><a class="psf-text-link" href="<?php echo esc_url( home_url( '/shop-floor/' ) ); ?>"><?php echo esc_html__( 'See the whole floor', 'public-shop-floor' ); ?></a></p>
 
 <?php
 require PSF_DIR . 'templates/footer.php';

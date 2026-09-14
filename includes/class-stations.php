@@ -15,23 +15,23 @@ class PSF_Stations {
 		return array(
 			array(
 				'key'   => 'mill',
-				'label' => 'Mill',
-				'verb'  => 'Being milled',
+				'label' => __( 'Mill', 'public-shop-floor' ),
+				'verb'  => __( 'Being milled', 'public-shop-floor' ),
 			),
 			array(
 				'key'   => 'joinery',
-				'label' => 'Joinery',
-				'verb'  => 'In joinery',
+				'label' => __( 'Joinery', 'public-shop-floor' ),
+				'verb'  => __( 'In joinery', 'public-shop-floor' ),
 			),
 			array(
 				'key'   => 'finish',
-				'label' => 'Finish',
-				'verb'  => 'In finish',
+				'label' => __( 'Finish', 'public-shop-floor' ),
+				'verb'  => __( 'In finish', 'public-shop-floor' ),
 			),
 			array(
 				'key'   => 'packed',
-				'label' => 'Packed',
-				'verb'  => 'Ready to leave',
+				'label' => __( 'Packed', 'public-shop-floor' ),
+				'verb'  => __( 'Ready to leave', 'public-shop-floor' ),
 			),
 		);
 	}
